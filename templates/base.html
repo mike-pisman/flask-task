@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>flask-task-manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename ='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='fonts/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='css/Footer-with-social-media-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='css/styles.css') }}">
+</head>
+
+<body>
+    <script src="{{ url_for('static', filename ='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename ='bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <div class="container mt-5">
+        <!-- Flash messages handling -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>
