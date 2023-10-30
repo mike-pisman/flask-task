@@ -5,6 +5,20 @@ from .models import Todo
 routes = Blueprint('routes', __name__)
 
 
+@routes.route("/login", methods=['GET', 'POST'])
+def login():
+    return render_template("login.html")
+
+
+@routes.route("/signup", methods=['GET', 'POST'])
+def signup():
+    if request.method == 'GET':
+        return render_template("signup.html")
+    elif request.method == 'POST':
+        # code to validate and add user to database goes here
+        return redirect(url_for('routes.login'))
+
+
 @routes.route("/", methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
