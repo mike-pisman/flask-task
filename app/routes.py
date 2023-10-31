@@ -1,8 +1,22 @@
-from flask import Blueprint, render_template, request, redirect, flash, url_for
+from flask import Blueprint, render_template, request, redirect, url_for
+import json
 from . import db
 from .models import Todo
 
+
 routes = Blueprint('routes', __name__)
+
+
+def JSONResponse(content: dict,
+                 status_code: int,
+                 headers: dict = {'ContentType': 'application/json'}) -> tuple:
+    return json.dumps(content), status_code, headers
+
+
+responses = {
+    200: JSONResponse({'success': True}, 200),
+    505: JSONResponse({'success': False}, 500)
+}
 
 
 @routes.route("/login", methods=['GET', 'POST'])
@@ -19,15 +33,19 @@ def signup():
         return redirect(url_for('routes.login'))
 
 
-@routes.route("/", methods=['GET', 'POST'])
+@routes.route("/", methods=['GET'])
 def home():
     if request.method == 'GET':
         tasks = Todo.query.order_by(Todo.date_created).all()
-        import os
-        print(os.getcwd())
         return render_template("/index.html", tasks=tasks)
+
+
+@routes.route('/tasks', methods=['GET', 'POST'])
+def create_task():
+    if request.method == 'GET':
+        tasks = Todo.query.order_by(Todo.date_created).all()
+        return JSONResponse({'tasks': tasks}, 200)
     elif request.method == 'POST':
-        print(request)
         task_content = request.form['content']
         new_task = Todo(content=task_content)
 
@@ -36,42 +54,41 @@ def home():
             db.session.commit()
             return redirect('/')
         except Exception:
-            return flash("Something went wrong while adding the task", "danger")
+            return responses[500]
 
 
-@routes.route('/complete/<int:id>', methods=['POST'])
-def complete(id):
+@routes.route('/tasks/<int:id>', methods=['POST'])
+def complete_task(id):
     task = Todo.query.get_or_404(id)
     task.completed = not task.completed
 
     try:
         db.session.commit()
-        return redirect('/')
+        return responses[200]
     except Exception:
-        return flash("Something went wrong while deleting the task", "danger")
+        return responses[500]
 
 
-@routes.route('/update/<int:id>', methods=['POST'])
-def update(id):
+@routes.route('/tasks/<int:id>', methods=['PATCH'])
+def update_task(id):
     task = Todo.query.get_or_404(id)
+    task.content = request.form['content']
 
-    if request.method == 'POST':
-        task.content = request.form['content']
-
-        try:
-            db.session.commit()
-            return redirect('/')
-        except Exception:
-            return flash("Something went wrong while deleting the task", "danger")
+    try:
+        db.session.commit()
+        return responses[200]
+    except Exception:
+        return responses[500]
 
 
-@routes.route('/delete/<int:id>')
-def delete(id):
+@routes.route('/tasks/<int:id>', methods=['DELETE'])
+def delete_task(id):
     task = Todo.query.get_or_404(id)
 
     try:
         db.session.delete(task)
         db.session.commit()
-        return redirect('/')
+        raise Exception
+        return responses[200]
     except Exception:
-        return flash("Something went wrong while deleting the task", "danger")
+        return responses[500]
