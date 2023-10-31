@@ -1,12 +1,23 @@
-$(document).on('click', '.button-complete', function(){
-    var taskId = $(this).data('task-id');
+$(document).on('click', '.complete-task', function(){
+    let taskId = $(this).parent().parent().parent().data('task-id');
     let button = $(this);
 
+    completeTask(taskId, button)
+});
+
+$(document).on('click', '.delete-task', function(){
+    console.log('delete');
+    let taskId = $(this).parent().parent().parent().data('task-id');
+
+    deleteTask(taskId);
+});
+
+
+completeTask = function(taskId, button) {
     $.ajax({
-        url: '/complete/' + taskId,
+        url: '/tasks/' + taskId,
         type: 'POST',
-        success: function (data) {
-            // $(this).prop("checked", true);
+        success: function () { 
             if (button.hasClass('done')) {
                 button.removeClass('done').addClass('todo');
                 addAlert('The task has been marked as todo', "info");
@@ -17,4 +28,53 @@ $(document).on('click', '.button-complete', function(){
             
         }
     });
-  });
+}
+
+
+deleteTask = function(taskId) {
+    $.ajax({
+        url: '/tasks/' + taskId,
+        type: 'DELETE',
+        success: function () {
+            $('#task_'+taskId).remove();
+            addAlert('The task has been deleted', "success");
+        }
+    });
+}
+
+
+createTask = function() {
+    formData = $('#createTaskForm').serialize();
+
+    $.ajax({
+        url: '/tasks',
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            newTask = JSON.parse(response).task;
+            $('#createTask').modal('hide');
+            addAlert('The task has been create', "success");
+
+            newRow = $('<tr id="task_' + newTask.id + '" data-task-id="' + newTask.id + '"></tr>');
+            completed = $(`
+                <td>
+                    <todo-task-button></todo-task-button>
+                </td>
+            `);
+            date = $('<td class="task-date">' + newTask.date_created + '</td>');
+            content = $('<td class="task-content"></td>').text(newTask.content);
+            actions = $(`
+                <td class="task-actions">
+                    <edit-task-button></edit-task-button>
+                    <delete-task-button></delete-task-button>
+                </td>
+            `);
+
+            newRow.append(completed, date, content, actions);
+            $('#taskList').append(newRow);
+        },
+        error: function () {
+            addAlert('The task could not be created', "danger");
+        }
+    });
+}
