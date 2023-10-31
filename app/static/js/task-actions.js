@@ -1,7 +1,9 @@
+// Check if task list is empty on page load
 $(document).ready(function(){
     hideListIfEmpty();
 });
 
+// Hide task list if empty
 hideListIfEmpty = function() {
     let message = $('#emptyListMessage');
     let list = $('#taskList');
@@ -15,6 +17,7 @@ hideListIfEmpty = function() {
     }
 }
 
+// Process complete-task button
 $(document).on('click', '.complete-task', function(){
     let taskId = $(this).parent().parent().parent().data('task-id');
     let button = $(this);
@@ -22,13 +25,14 @@ $(document).on('click', '.complete-task', function(){
     completeTask(taskId, button)
 });
 
+// Process delete-task button
 $(document).on('click', '.delete-task', function(){
     let taskId = $(this).parent().parent().parent().data('task-id');
 
     deleteTask(taskId);
 });
 
-
+// Mark task as done or todo
 completeTask = function(taskId, button) {
     $.ajax({
         url: '/tasks/' + taskId,
@@ -46,7 +50,7 @@ completeTask = function(taskId, button) {
     });
 }
 
-
+// Delete task
 deleteTask = function(taskId) {
     $.ajax({
         url: '/tasks/' + taskId,
@@ -59,7 +63,7 @@ deleteTask = function(taskId) {
     });
 }
 
-
+// Create task
 createTask = function() {
     formData = $('#createTaskForm').serialize();
 
@@ -79,7 +83,7 @@ createTask = function() {
                     <todo-task-button></todo-task-button>
                 </td>
             `);
-            date = $('<td class="task-date">' + newTask.date_created + '</td>');
+            date = $('<td class="task-date">' + (new Date(newTask.date_created)).toLocaleString('en-US', { timeZone: 'UTC' }).replace(/,/g, '') + '</td>');
             content = $('<td class="task-content"></td>').text(newTask.content);
             actions = $(`
                 <td class="task-actions">
@@ -98,6 +102,7 @@ createTask = function() {
     });
 }
 
+// Update task
 updateTask = function() {
     taskContent = $('#editTaskForm').find('textarea').val();
     formData = $('#editTaskForm').serialize();
