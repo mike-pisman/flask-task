@@ -63,3 +63,57 @@ delete-task-button:hover path{
     width: 5em;
     text-align: right;
 }
+
+
+/* Sign In CSS */
+
+.form-login, .form-signup {
+    margin: 25% auto ;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    max-width: 330px;
+    padding: 15px;
+}
+
+.form-login .checkbox, .form-signup .checkbox {
+    font-weight: 400;
+}
+
+.form-login .form-floating:focus-within,
+.form-signup .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-login label, .form-signup label {
+    color: gray;
+}
+
+.form-login input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-login input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-signup #email {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signup #password, .form-signup #name {
+    margin-bottom: -1px;
+    border-radius: 0;
+}
+
+.form-signup #confirmPassword {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
