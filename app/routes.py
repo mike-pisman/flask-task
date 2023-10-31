@@ -10,7 +10,7 @@ routes = Blueprint('routes', __name__)
 def JSONResponse(content: dict,
                  status_code: int,
                  headers: dict = {'ContentType': 'application/json'}) -> tuple:
-    return json.dumps(content), status_code, headers
+    return json.dumps(content, default=str), status_code, headers
 
 
 responses = {
@@ -44,7 +44,7 @@ def home():
 def create_task():
     if request.method == 'GET':
         tasks = Todo.query.order_by(Todo.date_created).all()
-        return JSONResponse({'tasks': tasks}, 200)
+        return JSONResponse({'tasks': [task.to_dict() for task in tasks]}, 200)
     elif request.method == 'POST':
         task_content = request.form['content']
         new_task = Todo(content=task_content)
@@ -52,7 +52,7 @@ def create_task():
         try:
             db.session.add(new_task)
             db.session.commit()
-            return redirect('/')
+            return JSONResponse({'task': new_task.to_dict()}, 200)
         except Exception:
             return responses[500]
 
@@ -88,7 +88,6 @@ def delete_task(id):
     try:
         db.session.delete(task)
         db.session.commit()
-        raise Exception
         return responses[200]
     except Exception:
         return responses[500]
