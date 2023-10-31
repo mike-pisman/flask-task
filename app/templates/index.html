@@ -2,11 +2,11 @@
 {% block content %}
 <div class="content">
     <div class="header">
-        <h3>Task List</h3>
+        <h2>Task List</h2>
         <button type="button" class=" float-right btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createTask">New Tasks</button>
     </div>
     
-    {% if tasks %}
+    
     <table class="table" id="taskList">
         <thead>
             <tr>
@@ -33,14 +33,10 @@
                     <delete-task-button></delete-task-button>
                 </td>
             </tr>
-
             {% endfor %}
+            <h4 id="emptyListMessage">Task list is empty!</h4>
         </tbody>
     </table>
-    {% else %}
-        <h4>Task list is empty!</h4>
-    {% endif %}
-
 
     <!-- Create New Task Modal -->
     <div class="modal fade" id="createTask" tabindex="-1" role="dialog" aria-labelledby="centerTitle" aria-hidden="true">

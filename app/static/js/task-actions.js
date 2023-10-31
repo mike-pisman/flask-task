@@ -1,3 +1,21 @@
+$(document).ready(function(){
+    hideListIfEmpty();
+});
+
+hideListIfEmpty = function() {
+    let message = $('#emptyListMessage');
+    let list = $('#taskList');
+    let listLength = $('#taskList tr').length;
+    console.log(listLength);
+    if (listLength == 1) {
+        list.css('display', 'none');
+        message.css('display', 'block');
+    } else {
+        list.css('display', 'table');
+        message.css('display', 'none');
+    }
+}
+
 $(document).on('click', '.complete-task', function(){
     let taskId = $(this).parent().parent().parent().data('task-id');
     let button = $(this);
@@ -38,6 +56,7 @@ deleteTask = function(taskId) {
         success: function () {
             $('#task_'+taskId).remove();
             addAlert('The task has been deleted', "success");
+            hideListIfEmpty();
         }
     });
 }
@@ -58,7 +77,7 @@ createTask = function() {
 
             newRow = $('<tr id="task_' + newTask.id + '" data-task-id="' + newTask.id + '"></tr>');
             completed = $(`
-                <td>
+                <td class="task-check">
                     <todo-task-button></todo-task-button>
                 </td>
             `);
@@ -73,6 +92,7 @@ createTask = function() {
 
             newRow.append(completed, date, content, actions);
             $('#taskList').append(newRow);
+            hideListIfEmpty();
         },
         error: function () {
             addAlert('The task could not be created', "danger");

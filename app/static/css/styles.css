@@ -30,7 +30,6 @@ delete-task-button:hover path{
     color: #781e27;
 }
 
-
 .header{
     margin-top: 1em;
     display: flex;
@@ -44,6 +43,15 @@ delete-task-button:hover path{
     width: 60%;
     margin: 1em auto;
     z-index: 99999;
+}
+
+#emptyListMessage{
+    margin-top: 1em;
+    text-align: center;
+}
+
+#taskList{
+    display: none;
 }
 
 #taskList th{
