@@ -6,7 +6,6 @@ hideListIfEmpty = function() {
     let message = $('#emptyListMessage');
     let list = $('#taskList');
     let listLength = $('#taskList tr').length;
-    console.log(listLength);
     if (listLength == 1) {
         list.css('display', 'none');
         message.css('display', 'block');
@@ -24,7 +23,6 @@ $(document).on('click', '.complete-task', function(){
 });
 
 $(document).on('click', '.delete-task', function(){
-    console.log('delete');
     let taskId = $(this).parent().parent().parent().data('task-id');
 
     deleteTask(taskId);
@@ -93,6 +91,27 @@ createTask = function() {
             newRow.append(completed, date, content, actions);
             $('#taskList').append(newRow);
             hideListIfEmpty();
+        },
+        error: function () {
+            addAlert('The task could not be created', "danger");
+        }
+    });
+}
+
+updateTask = function() {
+    taskContent = $('#editTaskForm').find('textarea').val();
+    formData = $('#editTaskForm').serialize();
+    taskID = $('#editTaskForm').data('task-id')
+
+    $.ajax({
+        url: '/tasks/' + taskID,
+        type: 'PATCH',
+        data: formData,
+        success: function () {
+            $('#editTask').modal('hide');
+            $('#editTaskForm').trigger('reset');
+            addAlert('The task has been updated', "success");
+            $('#task_' + taskID).find('.task-content').text(taskContent);
         },
         error: function () {
             addAlert('The task could not be created', "danger");

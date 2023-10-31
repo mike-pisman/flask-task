@@ -6,7 +6,7 @@
     </div>
     
     
-    <table class="table" id="taskList">
+    <table class="table align-middle" id="taskList">
         <thead>
             <tr>
                 <th scope="col"></th>
@@ -18,7 +18,7 @@
         <tbody>
             {% for task in tasks %}
             <tr id="task_{{ task.id }}" data-task-id="{{ task.id }}">
-                <td class="task-check" scope="row">
+                <td class="task-check">
                     {% if task.completed %}
                         <done-task-button></done-task-button>
                     {% else %}
@@ -69,7 +69,7 @@
                     <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Edit Task</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>            
-                <form action="" method="post" id="editTaskForm">
+                <form id="editTaskForm">
                     <div class="modal-body">
                         <div class="form-group">
                             <textarea class="form-control" name="content" id="content" rows="3"></textarea>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-target="#editTask" data-bs-dismiss="modal">Close</button>
-                        <input id="#submit" type="submit" class="btn btn-primary" value="Edit Task">
+                        <button type="button" class="btn btn-primary" value="Edit Task" onclick="updateTask()">Save</button>
                     </div>
                 </form>
             </div>

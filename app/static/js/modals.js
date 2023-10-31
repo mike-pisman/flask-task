@@ -4,6 +4,7 @@ $('#editTask').on('show.bs.modal', function (event) {
 
     var modal = $(this)
     var content = $("#task_"+id).find('.task-content').html()
-    modal.find('#editTaskForm textarea').html(content)
-    modal.find('#editTaskForm').attr('action', 'update/' + id);
+    $('#editTaskForm').find('textarea').html(content)
+    $('#editTaskForm').attr('action', 'tasks/' + id);
+    $('#editTaskForm').attr('data-task-id', id);
 })
