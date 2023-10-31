@@ -53,6 +53,7 @@ createTask = function() {
         success: function (response) {
             newTask = JSON.parse(response).task;
             $('#createTask').modal('hide');
+            $('#createTaskForm').trigger('reset');
             addAlert('The task has been create', "success");
 
             newRow = $('<tr id="task_' + newTask.id + '" data-task-id="' + newTask.id + '"></tr>');
