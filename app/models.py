@@ -10,3 +10,11 @@ class Todo(db.Model):
 
     def __repr__(self):
         return '<Task {self.id} was successfully created>'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'completed': self.completed,
+            'date_created': self.date_created.date()
+        }
