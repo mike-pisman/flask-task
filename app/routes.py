@@ -54,10 +54,10 @@ def login():
         return JSONResponse({'message': 'Logged in successfully'}, 200)
 
 
-@routes.route("/logout", methods=['GET'])
+@routes.route("/logout", methods=['POST'])
 @login_required_json
 def logout():
-    if request.method == 'GET':
+    if request.method == 'POST':
         logout_user()
         return JSONResponse({'message': 'Logged out successfully'}, 200)
 
