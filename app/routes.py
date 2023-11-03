@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for
 import json
-from .models import Task
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from werkzeug.security import check_password_hash
+from .models import Task, Account
 from .exceptions import NotFound
 
 routes = Blueprint('routes', __name__)
@@ -22,8 +23,23 @@ def signup():
     if request.method == 'GET':
         return render_template("signup.html")
     elif request.method == 'POST':
-        # code to validate and add user to database goes here
-        return redirect(url_for('routes.login'))
+        # Get the form data
+        email = request.form.get('email')
+        name = request.form.get('name')
+        password = request.form.get('password')
+
+        # Check if account already exists
+        account = Account.query.filter_by(email=email).first()
+        if account:
+            return JSONResponse(
+                {'error': 'Account with such email already exists'}, 400)
+
+        # Create a new user with the form data.
+        Account(email, name, password).create()
+
+        # Redirect to login page
+        flash('Account created successfully', 'success')
+        return JSONResponse({'message': 'Account created successfully'}, 201)
 
 
 @routes.route("/", methods=['GET'])
@@ -41,11 +57,10 @@ def create_task():
         try:
             task_content = request.form['content']
             new_task = Task(content=task_content).create()
-            return JSONResponse({'task': new_task.to_dict()}, 200)
+            return JSONResponse({'task': new_task.to_dict()}, 201)
         except NotFound:
             return JSONResponse({'error': 'Task not found'}, 404)
-        except Exception as e:
-            print(e)
+        except Exception:
             return JSONResponse({'error': 'Internal Server Error'}, 500)
 
 
