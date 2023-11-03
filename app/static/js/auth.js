@@ -1,3 +1,21 @@
+$(document).ready(function() {
+    $('#form-login').submit(function(e){
+        e.preventDefault();
+        login();
+    });
+
+    $('#form-signup').submit(function(e){
+        e.preventDefault();
+        signup();
+    });
+
+    $('#logout-link').click(function(){
+        console.log("logout");
+        logout();
+        return false;
+    });
+});
+
 signup = function(){
     form = $('#form-signup');
     formData = {
@@ -13,6 +31,7 @@ signup = function(){
         data: formData,
         success: function (data) {
             window.open("/login", "_self");
+            return false;
         },
         error: function (data) {
             response = JSON.parse(data.responseText);
@@ -40,6 +59,7 @@ login = function(){
         data: formData,
         success: function (data) {
             window.open("/", "_self");
+            return false;
         },
         error: function (data) {
             response = JSON.parse(data.responseText);
@@ -48,14 +68,18 @@ login = function(){
     });
 }
 
-$(document).ready(function() {
-    $('#form-login').submit(function(e){
-        e.preventDefault();
-        login();
+logout = function(){
+    $.ajax({
+        url: '/logout',
+        type: 'POST',
+        accepts: 'application/json',
+        success: function (data) {
+            window.open("/login", "_self");
+            return false;
+        },
+        error: function (data) {
+            response = JSON.parse(data.responseText);
+            addAlert(response.error, "danger");
+        }
     });
-
-    $('#form-signup').submit(function(e){
-        e.preventDefault();
-        signup();
-    });
-});
+}
