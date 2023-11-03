@@ -52,7 +52,7 @@ def create_task():
 @routes.route('/tasks/<int:id>', methods=['POST'])
 def complete_task(id):
     try:
-        task = Task.get(0)
+        task = Task.get(id)
         task.completed = not task.completed
         task.save()
         return JSONResponse({'task': task.to_dict()}, 200)
