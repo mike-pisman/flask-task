@@ -15,7 +15,28 @@ def JSONResponse(content: dict,
 
 @routes.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    if request.method == 'GET':
+        return render_template("login.html")
+    elif request.method == 'POST':
+        try:
+            email = request.form['email']
+            password = request.form['password']
+            remember = request.form['remember'] == "true"
+        except KeyError:
+            return JSONResponse({'error': 'Invalid request body'}, 400)
+
+        user = Account.query.filter_by(email=email).first()
+
+        # Check if the user actually exists
+        # Hash the password and compare it to the stored one in the database
+        if not user or not check_password_hash(user.password, password):
+            return JSONResponse(
+                {'error': 'Please check your login details and try again.'},
+                401)
+
+        # Return a response to the user
+        flash('Logged in successfully', 'success')
+        return JSONResponse({'message': 'Logged in successfully'}, 200)
 
 
 @routes.route("/signup", methods=['GET', 'POST'])
@@ -37,7 +58,7 @@ def signup():
         # Create a new user with the form data.
         Account(email, name, password).create()
 
-        # Redirect to login page
+        # Return a response to the user
         flash('Account created successfully', 'success')
         return JSONResponse({'message': 'Account created successfully'}, 201)
 
