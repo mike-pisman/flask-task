@@ -1,5 +1,6 @@
 import json
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from .models import Task, Account
 from .exceptions import NotFound
@@ -34,6 +35,9 @@ def login():
                 {'error': 'Please check your login details and try again.'},
                 401)
 
+        # Log in the user
+        login_user(user, remember=remember)
+
         # Return a response to the user
         flash('Logged in successfully', 'success')
         return JSONResponse({'message': 'Logged in successfully'}, 200)
@@ -64,17 +68,22 @@ def signup():
 
 
 @routes.route("/", methods=['GET'])
+@login_required
 def home():
     if request.method == 'GET':
-        return render_template("/index.html", tasks=Task.get_all())
+        return render_template("index.html", tasks=Task.get_all())
 
 
-@routes.route('/tasks', methods=['GET', 'POST'])
-def create_task():
+@routes.route("/tasks", methods=['GET'])
+def get_tasks():
     if request.method == 'GET':
         tasks = Task.get_all()
         return JSONResponse({'tasks': [task.to_dict() for task in tasks]}, 200)
-    elif request.method == 'POST':
+
+
+@routes.route('/tasks', methods=['POST'])
+def create_task():
+    if request.method == 'POST':
         try:
             task_content = request.form['content']
             new_task = Task(content=task_content).create()
