@@ -155,3 +155,10 @@ def delete_task(id):
         return JSONResponse({'error': 'Task not found'}, 404)
     except Exception:
         return JSONResponse({'error': 'Internal Server Error'}, 500)
+
+
+@routes.route('/account', methods=['GET'])
+@login_required
+def account_page():
+    if request.method == 'GET':
+        return render_template("account.html", name=current_user.name)
