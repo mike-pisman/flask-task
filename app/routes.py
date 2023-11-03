@@ -1,3 +1,4 @@
+from functools import wraps
 import json
 from flask import Blueprint, render_template, request, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -12,6 +13,16 @@ def JSONResponse(content: dict,
                  status_code: int,
                  headers: dict = {'ContentType': 'application/json'}) -> tuple:
     return json.dumps(content, default=str), status_code, headers
+
+
+def login_required_json(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return JSONResponse({'error': 'Unauthorized'}, 401)
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 @routes.route("/login", methods=['GET', 'POST'])
@@ -41,6 +52,16 @@ def login():
         # Return a response to the user
         flash('Logged in successfully', 'success')
         return JSONResponse({'message': 'Logged in successfully'}, 200)
+
+
+@routes.route("/logout", methods=['GET'])
+@login_required_json
+def logout():
+    if not current_user.is_authenticated:
+        return JSONResponse({'error': 'Unauthorized'}, 401)
+    if request.method == 'GET':
+        logout_user()
+        return JSONResponse({'message': 'Logged out successfully'}, 200)
 
 
 @routes.route("/signup", methods=['GET', 'POST'])
@@ -75,6 +96,7 @@ def home():
 
 
 @routes.route("/tasks", methods=['GET'])
+@login_required_json
 def get_tasks():
     if request.method == 'GET':
         tasks = Task.get_all()
@@ -82,6 +104,7 @@ def get_tasks():
 
 
 @routes.route('/tasks', methods=['POST'])
+@login_required_json
 def create_task():
     if request.method == 'POST':
         try:
@@ -95,6 +118,7 @@ def create_task():
 
 
 @routes.route('/tasks/<int:id>', methods=['POST'])
+@login_required_json
 def complete_task(id):
     try:
         task = Task.get(id)
@@ -108,6 +132,7 @@ def complete_task(id):
 
 
 @routes.route('/tasks/<int:id>', methods=['PATCH'])
+@login_required_json
 def update_task(id):
     try:
         task = Task.get(id)
@@ -121,6 +146,7 @@ def update_task(id):
 
 
 @routes.route('/tasks/<int:id>', methods=['DELETE'])
+@login_required_json
 def delete_task(id):
     try:
         Task.get(id).delete()
