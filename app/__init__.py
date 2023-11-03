@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 import secrets
 
 
@@ -15,6 +16,19 @@ db.init_app(app)
 # Routes
 from . import routes
 app.register_blueprint(routes.routes)
+
+# Login manager
+login_manager = LoginManager()
+login_manager.login_view = 'routes.login'
+login_manager.login_message_category = 'danger'
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    from .models import Account
+    return Account.query.get(int(user_id))
+
 
 # Initialize the database
 with app.app_context():

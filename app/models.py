@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from . import db
 from .exceptions import NotFound
@@ -54,7 +55,7 @@ class Task(Model):
         return '<Task {self.id} was successfully created>'
 
 
-class Account(Model):
+class Account(UserMixin, Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
