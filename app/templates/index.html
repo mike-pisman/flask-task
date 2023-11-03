@@ -25,7 +25,7 @@
                         <todo-task-button></todo-task-button>
                     {% endif %}
                 </td>
-                <td class="task-date"><script>document.write((new Date('{{ task.date_created.isoformat() }}')).toLocaleString('en-US', { timeZone: 'UTC' }).replace(/,/g, ''))</script></td>
+                <td class="task-date"><script>document.write((new Date('{{ task.date_created }}'+'Z')).toLocaleString().replace(/,/g, ''))</script></td>
                 <td class="task-content">{{ task.content }}</td>
                 <td class="task-actions">
                     <edit-task-button></edit-task-button>

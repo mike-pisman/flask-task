@@ -83,7 +83,7 @@ createTask = function() {
                     <todo-task-button></todo-task-button>
                 </td>
             `);
-            date = $('<td class="task-date">' + (new Date(newTask.date_created)).toLocaleString('en-US', { timeZone: 'UTC' }).replace(/,/g, '') + '</td>');
+            date = $('<td class="task-date">' + (new Date(newTask.date_created + 'Z')).toLocaleString().replace(/,/g, '') + '</td>');
             content = $('<td class="task-content"></td>').text(newTask.content);
             actions = $(`
                 <td class="task-actions">
