@@ -57,8 +57,6 @@ def login():
 @routes.route("/logout", methods=['GET'])
 @login_required_json
 def logout():
-    if not current_user.is_authenticated:
-        return JSONResponse({'error': 'Unauthorized'}, 401)
     if request.method == 'GET':
         logout_user()
         return JSONResponse({'message': 'Logged out successfully'}, 200)
