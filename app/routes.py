@@ -1,6 +1,6 @@
 from functools import wraps
 import json
-from flask import Blueprint, render_template, request, url_for, flash
+from flask import Blueprint, render_template, request, url_for, flash, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash
 from .models import Task, Account
@@ -28,6 +28,9 @@ def login_required_json(f):
 @routes.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
+        if current_user.is_authenticated:
+            return redirect(url_for('routes.account_page'))
+
         return render_template("login.html")
     elif request.method == 'POST':
         try:
@@ -59,6 +62,7 @@ def login():
 def logout():
     if request.method == 'POST':
         logout_user()
+        flash('Logged out successfully', 'success')
         return JSONResponse({'message': 'Logged out successfully'}, 200)
 
 
