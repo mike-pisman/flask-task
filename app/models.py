@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 from . import db
 from .exceptions import NotFound
 
@@ -58,3 +59,9 @@ class Account(Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
+
+    def __init__(self, email, name, password) -> None:
+        super().__init__()
+        self.email = email
+        self.name = name
+        self.password = generate_password_hash(password)
