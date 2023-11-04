@@ -31,13 +31,24 @@ delete-task-button:hover path{
 }
 
 .container{
-    margin-top: 56px;
+    /* margin-top: 56px; */
 }
 
 .header{
-    margin-top: 5em;
-    display: flex;
-    justify-content: flex-end;
+    /* margin-top: 5em; */
+    z-index: 100;
+}
+
+.subnavbar{
+    z-index: 0;
+}
+
+.searchInput{
+    margin-right: 1em;
+}
+
+#searchInput{
+    width: 100%;
 }
 
 #alert_placeholder{
