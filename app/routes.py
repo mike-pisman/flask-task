@@ -29,7 +29,7 @@ def login_required_json(f):
 def login():
     if request.method == 'GET':
         if current_user.is_authenticated:
-            return redirect(url_for('routes.account_page'))
+            return redirect(url_for('routes.profile_page'))
 
         return render_template("login.html")
     elif request.method == 'POST':
@@ -159,8 +159,8 @@ def delete_task(id):
         return JSONResponse({'error': 'Internal Server Error'}, 500)
 
 
-@routes.route('/account', methods=['GET'])
+@routes.route('/profile', methods=['GET'])
 @login_required
-def account_page():
+def profile_page():
     if request.method == 'GET':
-        return render_template("account.html", name=current_user.name)
+        return render_template("profile.html", name=current_user.name)
