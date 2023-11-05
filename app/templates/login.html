@@ -3,7 +3,7 @@
 {% block content %}
 <div>
     <form id="form-login">
-        <h1 class="h3 mb-3 fw-normal">Sign In</h1>
+        <h1 class="h3 mb-3 fw-normal">{% block title %} Sign In {% endblock %}</h1>
 
         <div class="form-floating">
             <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
