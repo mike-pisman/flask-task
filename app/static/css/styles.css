@@ -91,7 +91,7 @@ delete-task-button:hover path{
 /* Sign In CSS */
 
 #form-login, #form-signup {
-    margin: 25% auto ;
+    margin: 10em auto;
     align-items: center;
     width: 100%;
     height: 50%;
