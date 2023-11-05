@@ -1,7 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  Welcome, {{ name }}!
-</h1>
+<div class="content container">
+  <h1 class="text-center mt-5">{% block title %}My Account{% endblock %}</h1>
+  
+  <div class="d-flex justify-content-between">
+    <h2>Welcome, {{ current_user.name }}!</h2>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update Profile</button>
+  </div>
+  <div>
+    <h4>Your Tasks:</h4>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="{{ tasks.done }}" aria-valuemin="0" aria-valuemax="{{ tasks.total }}">{{ tasks.percent }}%</div>
+    </div>
+    <ul>
+      <li>Total tasks: {{ tasks.total }} </li>
+      <li>Done: {{ tasks.done }} </li>
+      <li>To Do: {{ tasks.todo }}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-profile-update">
+        
+          <div class="form-floating">
+            <input type="email" class="form-control" id="email" placeholder="name@example.com" value="{{ current_user.email }}" disabled>
+            <label or="email">Email address</label>
+          </div>
+      
+          <div class="form-floating">
+              <input type="text" class="form-control" id="name" placeholder="name" value="{{ current_user.name }}">
+              <label for="name">Name</label>
+          </div>
+      
+          <div class="form-floating">
+              <input id="password" class="form-control" name="password" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Must have at least 6 characters' : ''); if(this.checkValidity()) form.confirmPassword.pattern = this.value;" placeholder="Password" required value="******">
+              <label for="password">Password</label>
+          </div> 
+      
+          <div class="form-floating">
+              <input id="confirmPassword" class="form-control" name="confirmPassword" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="Verify Password" required value="******">
+              <label for="confirmPassword">Confirm Password</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
