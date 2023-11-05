@@ -94,7 +94,7 @@ def signup():
 @login_required
 def home():
     if request.method == 'GET':
-        return render_template("index.html", tasks=Task.get_all())
+        return render_template("index.html", title="home", tasks=Task.get_all())
 
 
 @routes.route("/tasks", methods=['GET'])
@@ -163,4 +163,19 @@ def delete_task(id):
 @login_required
 def profile_page():
     if request.method == 'GET':
-        return render_template("profile.html", name=current_user.name)
+        all_tasks = Task.get_all()
+        tasks = {
+            'total': len(all_tasks),
+            'done': len([task for task in all_tasks if task.completed]),
+            'todo': 0,
+            'percent': 0
+        }
+        tasks['todo'] = tasks['total'] - tasks['done']
+        tasks['percent'] = round(tasks['done'] / tasks['total'] * 100)
+        return render_template("profile.html", tasks=tasks)
+
+
+@routes.route('/about', methods=['GET'])
+def about_page():
+    if request.method == 'GET':
+        return render_template("about.html", title="about")
