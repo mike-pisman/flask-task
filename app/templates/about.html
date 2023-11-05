@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<ul id="navigation">
+    {% for item in navigation %}
+        <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <div class="content container">
+        <h1>{% block title %} About {% endblock %}</h1>
+        <p>This is a simple task manager application written in Python using the Flask framework.</p>
+    </div>
+{% endblock %}
