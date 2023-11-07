@@ -9,23 +9,24 @@ routes = Blueprint('task_routes', __name__)
 @routes.route("/tasks", methods=['GET'])
 @login_required_json
 def get_tasks():
-    if request.method == 'GET':
+    try:
         tasks = Task.get_all()
         return JSONResponse({'tasks': [task.to_dict() for task in tasks]}, 200)
+    except Exception:
+        return JSONResponse({'error': 'Internal Server Error'}, 500)
 
 
 @routes.route('/tasks', methods=['POST'])
 @login_required_json
 def create_task():
-    if request.method == 'POST':
-        try:
-            task_content = request.form['content']
-            new_task = Task(content=task_content).create()
-            return JSONResponse({'task': new_task.to_dict()}, 201)
-        except NotFound:
-            return JSONResponse({'error': 'Task not found'}, 404)
-        except Exception:
-            return JSONResponse({'error': 'Internal Server Error'}, 500)
+    try:
+        task_content = request.form['content']
+        new_task = Task(content=task_content).create()
+        return JSONResponse({'task': new_task.to_dict()}, 201)
+    except NotFound:
+        return JSONResponse({'error': 'Task not found'}, 404)
+    except Exception:
+        return JSONResponse({'error': 'Internal Server Error'}, 500)
 
 
 @routes.route('/tasks/<int:id>', methods=['POST'])
