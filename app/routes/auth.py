@@ -1,7 +1,7 @@
 from flask import Blueprint, request, flash
 from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash
-from app.models import Account
+from app.models.account import Account
 from app.routes import JSONResponse, login_required_json
 
 routes = Blueprint('auth_routes', __name__)
