@@ -6,6 +6,7 @@ import secrets
 
 # Initialize the app
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SECRET_KEY'] = secrets.token_urlsafe(16)
 
@@ -14,12 +15,14 @@ db = SQLAlchemy()
 db.init_app(app)
 
 # Routes
-from . import routes
-app.register_blueprint(routes.routes)
+from app.routes import auth, pages, tasks  # noqa: E402
+app.register_blueprint(auth.routes)
+app.register_blueprint(pages.routes)
+app.register_blueprint(tasks.routes)
 
 # Login manager
 login_manager = LoginManager()
-login_manager.login_view = 'routes.login'
+login_manager.login_view = 'page_routes.login_page'
 login_manager.login_message_category = 'danger'
 login_manager.init_app(app)
 
