@@ -3,21 +3,19 @@
 {% block content %}
 <div class="content container">
   <h1 class="text-center mt-5">{% block title %}My Account{% endblock %}</h1>
-  
-  <div class="d-flex justify-content-between">
-    <h2>Welcome, {{ current_user.name }}!</h2>
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update Profile</button>
-  </div>
-  <div>
+  <h3>Welcome, {{ current_user.name }}!</h3>
+  <div class="mt-5">
     <h4>Your Tasks:</h4>
     <div class="progress">
       <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="{{ tasks.done }}" aria-valuemin="0" aria-valuemax="{{ tasks.total }}">{{ tasks.percent }}%</div>
     </div>
-    <ul>
-      <li>Total tasks: {{ tasks.total }} </li>
-      <li>Done: {{ tasks.done }} </li>
-      <li>To Do: {{ tasks.todo }}</li>
-    </ul>
+    <div class="mt-3">
+      <p class="badge bg-success">Done: {{ tasks.done }}</p>
+      <p class="badge bg-primary">To Do: {{ tasks.todo }}</p>
+    </div>
+  </div>
+  <div class="mt-5 d-flex justify-content-center">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update Profile</button>
   </div>
 </div>
 
