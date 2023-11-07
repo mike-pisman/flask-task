@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.models import Task
+from app.models.task import Task
 from app.exceptions import NotFound
 from app.routes import JSONResponse, login_required_json
 
