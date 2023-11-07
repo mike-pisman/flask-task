@@ -9,7 +9,9 @@ class Task(Model):
     content = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
-
+    task_list_id = db.Column(db.Integer,
+                             db.ForeignKey('task_list.id'),
+                             nullable=False)
 
     def __init__(self, content) -> None:
         super().__init__()
