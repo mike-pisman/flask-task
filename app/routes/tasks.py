@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from app.models.task import Task
+from app.models.task_list import TaskList
 from app.exceptions import NotFound
 from app.routes import JSONResponse, login_required_json
 
@@ -21,10 +22,13 @@ def get_tasks():
 def create_task():
     try:
         task_content = request.form['content']
+        task_list_id = request.form['list_id']
+        task_list = TaskList.get(task_list_id)
         new_task = Task(content=task_content).create()
+        task_list.add_task(new_task)
         return JSONResponse({'task': new_task.to_dict()}, 201)
     except NotFound:
-        return JSONResponse({'error': 'Task not found'}, 404)
+        return JSONResponse({'error': 'Task list not found'}, 404)
     except Exception:
         return JSONResponse({'error': 'Internal Server Error'}, 500)
 
