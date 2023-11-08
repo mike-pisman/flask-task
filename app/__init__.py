@@ -29,7 +29,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    from .models import Account
+    from app.models.account import Account
     return Account.query.get(int(user_id))
 
 
