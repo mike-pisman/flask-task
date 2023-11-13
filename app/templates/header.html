@@ -11,7 +11,7 @@
                 </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link {% if title == "home" %}active{% endif %}" aria-current="page" href="#">Lists</a>
+                    <a class="nav-link {% if title == "lists" %}active{% endif %}" aria-current="page" href="/lists">Lists</a>
                 </li>
                 {% endif %}
             </ul>
@@ -23,7 +23,7 @@
                     </a>
                     
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="profile">Account</a></li>
+                      <li><a class="dropdown-item" href="/profile">Account</a></li>
                       <!--<li><a class="dropdown-item" href="#">Task lists</a></li>-->
                       <li><a id="logout-link" class="dropdown-item" aria-current="page" href="">Logout</a></li>
                     </ul>
