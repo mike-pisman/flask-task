@@ -15,10 +15,11 @@ db = SQLAlchemy()
 db.init_app(app)
 
 # Routes
-from app.routes import auth, pages, tasks  # noqa: E402
+from app.routes import auth, pages, tasks, lists  # noqa: E402
 app.register_blueprint(auth.routes)
 app.register_blueprint(pages.routes)
 app.register_blueprint(tasks.routes)
+app.register_blueprint(lists.routes)
 
 # Login manager
 login_manager = LoginManager()
