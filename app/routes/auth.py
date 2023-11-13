@@ -7,7 +7,7 @@ from app.routes import JSONResponse, login_required_json
 routes = Blueprint('auth_routes', __name__)
 
 
-@routes.route("/login", methods=['POST'])
+@routes.route("/api/login", methods=['POST'])
 def login():
     try:
         email = request.form['email']
@@ -33,7 +33,7 @@ def login():
     return JSONResponse({'message': 'Logged in successfully'}, 200)
 
 
-@routes.route("/logout", methods=['POST'])
+@routes.route("/api/logout", methods=['POST'])
 @login_required_json
 def logout():
     if request.method == 'POST':
@@ -42,7 +42,7 @@ def logout():
         return JSONResponse({'message': 'Logged out successfully'}, 200)
 
 
-@routes.route("/signup", methods=['POST'])
+@routes.route("/api/signup", methods=['POST'])
 def signup():
     # Get the form data
     email = request.form.get('email')
