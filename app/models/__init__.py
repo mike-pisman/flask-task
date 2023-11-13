@@ -15,7 +15,9 @@ class Model(db.Model):
 
     # Return all model instances
     @classmethod
-    def get_all(cls):
+    def get_all(cls, owner_id=None):
+        if owner_id:
+            return cls.query.filter_by(account_id=owner_id).all()
         return cls.query.all()
 
     # Create a new model instance and save it to the database
