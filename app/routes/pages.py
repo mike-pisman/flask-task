@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect
 from flask_login import login_required
 from app.models.task import Task
+from app.models.task_list import TaskList
 from flask_login import current_user
 
 
@@ -10,7 +11,28 @@ routes = Blueprint("page_routes", __name__)
 @routes.route("/", methods=["GET"])
 @login_required
 def home_page():
-    return render_template("index.html", title="home", tasks=Task.get_all())
+    redirect(url_for("page_routes.lists_page"))
+
+
+@routes.route("/lists", methods=["GET"])
+@login_required
+def lists_page():
+    lists = TaskList.get_all(current_user.id)
+    return render_template("lists.html", title="home", lists=lists)
+
+
+@routes.route("/lists/<int:list_id>", methods=["GET"])
+@login_required
+def list_page(list_id):
+    return redirect(url_for("page_routes.task_page", list_id=list_id))
+
+
+@routes.route("/lists/<int:list_id>/tasks", methods=["GET"])
+@login_required
+def task_page(list_id):
+    task_list = TaskList.get(list_id)
+    tasks = task_list.get_tasks()
+    return render_template("tasks.html", title="home", tasks=tasks)
 
 
 @routes.route("/login", methods=["GET"])
@@ -23,6 +45,8 @@ def login_page():
 
 @routes.route("/signup", methods=["GET"])
 def signup_page():
+    if current_user.is_authenticated:
+        return redirect(url_for("page_routes.profile_page"))
     return render_template("signup.html")
 
 
