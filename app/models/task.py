@@ -13,9 +13,10 @@ class Task(Model):
                              db.ForeignKey('task_list.id'),
                              nullable=False)
 
-    def __init__(self, content) -> None:
+    def __init__(self, content, task_list_id) -> None:
         super().__init__()
         self.content = content
+        self.task_list_id = task_list_id
         self.date_created = datetime.utcnow()
 
     def __repr__(self):
