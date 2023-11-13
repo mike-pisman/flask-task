@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0">
+            <ul class="nav navbar-nav mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link {% if title == "about" %}active{% endif %}" aria-current="page" href="/about">About</a>
                 </li>
@@ -15,17 +15,16 @@
                 </li>
                 {% endif %}
             </ul>
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <ul class="nav navbar-nav navbar-right ms-auto mb-2 mb-lg-0">
                 {% if current_user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {{ current_user.name }}
                     </a>
                     
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="profile">Account</a></li>
                       <!--<li><a class="dropdown-item" href="#">Task lists</a></li>-->
-                      <li><hr class="dropdown-divider"></li>
                       <li><a id="logout-link" class="dropdown-item" aria-current="page" href="">Logout</a></li>
                     </ul>
                     
