@@ -5,14 +5,18 @@ from app.models import Model
 class TaskList(Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    tasks = db.relationship('Task', backref='task_list', lazy=True)
+    tasks = db.relationship("Task", backref="task_list", lazy=True)
+    account_id = db.Column(db.Integer,
+                           db.ForeignKey("account.id"),
+                           nullable=False)
 
-    def __init__(self, name) -> None:
+    def __init__(self, name, account_id) -> None:
         super().__init__()
+        self.account_id = account_id
         self.name = name
 
     def __repr__(self):
-        return '<TaskList {self.id} was successfully created>'
+        return "<TaskList {self.id} was successfully created>"
 
     # Add a task to the task list
     def add_task(self, task):
