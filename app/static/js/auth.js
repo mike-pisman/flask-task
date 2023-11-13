@@ -25,7 +25,7 @@ signup = function(){
     }
 
     $.ajax({
-        url: '/signup',
+        url: '/api/signup',
         type: 'POST',
         accepts: 'application/json',
         data: formData,
@@ -50,10 +50,8 @@ login = function(){
         remember: $('#remember-me').is(':checked')
     }
 
-    console.log(formData);
-
     $.ajax({
-        url: '/login',
+        url: '/api/login',
         type: 'POST',
         accepts: 'application/json',
         data: formData,
@@ -70,7 +68,7 @@ login = function(){
 
 logout = function(){
     $.ajax({
-        url: '/logout',
+        url: '/api/logout',
         type: 'POST',
         accepts: 'application/json',
         success: function (data) {
