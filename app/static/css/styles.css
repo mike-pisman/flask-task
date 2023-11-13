@@ -1,3 +1,36 @@
+/* Navbar CSS */
+@media only screen and (max-width: 992px) {
+    .nav>li>a.dropdown-toggle {
+        display: none;
+    }
+    .nav .dropdown-menu {
+        display:block;
+        position: static;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        padding: 0;
+        background-color: transparent;
+        border: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .nav .dropdown-menu>li>a {
+        padding: 8px 0;
+        color: var(--bs-nav-link-color);
+    }
+    .nav .dropdown-menu>li>a:hover {
+        background-color: transparent;
+        color: var(--bs-nav-link-hover-color);
+    }
+}
+
+.dropdown-menu[data-bs-popper] {
+    right: 0 !important;
+}
+
+/* Tasks CSS */
+
 .done path{
     d: path("M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z");
     color: green;
@@ -65,11 +98,11 @@ delete-task-button:hover path{
     text-align: center;
 }
 
-#taskList{
+#table{
     display: none;
 }
 
-#taskList th{
+#table th{
     text-align: center;
 }
 
@@ -82,7 +115,7 @@ delete-task-button:hover path{
     width: 10em;
 }
 
-.task-actions{
+.task-actions, .list-actions{
     width: 5em;
     text-align: right;
 }
@@ -140,3 +173,4 @@ delete-task-button:hover path{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
