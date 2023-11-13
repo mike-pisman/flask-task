@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-
     <div class="content container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">About</li>
+            </ol>
+        </nav>
         <h1 class="text-center mt-5">{% block title %} About {% endblock %}</h1>
         <p class="mt-3">This is a simple task manager application written in Python using the Flask framework.</p>
     </div>

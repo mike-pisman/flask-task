@@ -2,6 +2,12 @@
 
 {% block content %}
 <div class="content container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+    </ol>
+  </nav>
   <h1 class="text-center mt-5">{% block title %}My Account{% endblock %}</h1>
   <h3>Welcome, {{ current_user.name }}!</h3>
   <div class="mt-5">

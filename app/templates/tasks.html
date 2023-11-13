@@ -11,6 +11,13 @@
 </nav>
 
 <div class="content container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/lists">Task Lists</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ task_list.name }}</li>
+        </ol>
+    </nav>
     <table class="table navbar-light bg-light align-middle" id="table">
         <thead>
             <tr>
