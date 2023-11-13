@@ -11,7 +11,7 @@ routes = Blueprint("page_routes", __name__)
 @routes.route("/", methods=["GET"])
 @login_required
 def home_page():
-    redirect(url_for("page_routes.lists_page"))
+    return redirect(url_for("page_routes.lists_page"))
 
 
 @routes.route("/lists", methods=["GET"])
