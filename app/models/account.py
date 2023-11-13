@@ -9,6 +9,7 @@ class Account(UserMixin, Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
+    lists = db.relationship('TaskList', backref='account', lazy=True)
 
     def __init__(self, email, name, password) -> None:
         super().__init__()
