@@ -18,7 +18,7 @@ def home_page():
 @login_required
 def lists_page():
     lists = TaskList.get_all(current_user.id)
-    return render_template("lists.html", title="home", lists=lists)
+    return render_template("lists.html", title="lists", lists=lists)
 
 
 @routes.route("/lists/<int:list_id>", methods=["GET"])
@@ -32,7 +32,10 @@ def list_page(list_id):
 def task_page(list_id):
     task_list = TaskList.get(list_id)
     tasks = task_list.get_tasks()
-    return render_template("tasks.html", title="home", tasks=tasks)
+    return render_template("tasks.html",
+                           title="tasks",
+                           task_list=task_list,
+                           tasks=tasks)
 
 
 @routes.route("/login", methods=["GET"])
