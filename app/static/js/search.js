@@ -1,6 +1,6 @@
 $(function(){
     $("#listSearchInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
+        var value = $(this).val().toLowerCase().split(" ");
 
         $("table tr").each(function(index) {
             if (index != 0) {
@@ -9,11 +9,12 @@ $(function(){
 
                 var name = $row.find(".list-name").text();
 
-                if (name.toLowerCase().indexOf(value) == -1) {
-                    $(this).hide();
-                }
-                else {
-                    $(this).show();
+                $(this).show();
+                for (i in value) {
+                    if (name.toLowerCase().indexOf(value[i]) == -1) {
+                        $(this).hide();
+                        break;
+                    }
                 }
             }
         });
