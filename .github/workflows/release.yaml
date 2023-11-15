@@ -11,7 +11,7 @@ jobs:
   increment_version:
     outputs:
       new_tag: ${{ steps.increment_version.outputs.new_tag }}
-    runs-on: arc-runner-k8s
+    runs-on: ubuntu-latest
     steps:
     - name: Force Install GIT latest
       run: |
@@ -44,7 +44,7 @@ jobs:
         git push --tags
   release:
     needs: increment_version
-    runs-on: arc-runner-k8s
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -65,7 +65,7 @@ jobs:
         prerelease: false
   docker:
     needs: increment_version
-    runs-on: arc-runner-k8s
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
