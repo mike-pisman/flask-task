@@ -65,7 +65,10 @@ def profile_page():
             "percent": 0,
         }
         tasks["todo"] = tasks["total"] - tasks["done"]
-        tasks["percent"] = round(tasks["done"] / tasks["total"] * 100)
+        if tasks["total"] > 0:
+            tasks["percent"] = round(tasks["done"] / tasks["total"] * 100)
+        else:
+            tasks["percent"] = 0
         return render_template("profile.html", tasks=tasks)
 
 
