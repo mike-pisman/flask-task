@@ -14,3 +14,6 @@ Please check out the [live demo](https://flask-task.mpisman.app)
 - Mark tasks as complete/todo
 - Filter tasks by name
 - Update profile information and check task statistics
+
+## Preview
+![2023-11-14 22-56-12](https://github.com/mike-pisman/flask-task/assets/58354623/8f38ba0b-324b-41b7-a596-b243aa731608)
