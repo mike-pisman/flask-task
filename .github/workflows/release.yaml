@@ -1,0 +1,92 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  increment_version:
+    outputs:
+      new_tag: ${{ steps.increment_version.outputs.new_tag }}
+    runs-on: arc-runner-k8s
+    steps:
+    - name: Force Install GIT latest
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository -y ppa:git-core/ppa
+        sudo apt-get update
+        sudo apt-get install -y git
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Fetch all tags
+      run: git fetch --tags
+
+    - name: Increment version
+      id: increment_version
+      run: |
+        latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+        echo "Latest tag: $latest_tag"
+        new_tag="$(echo $latest_tag | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')"
+        echo "New tag: $new_tag"
+        echo "new_tag=$new_tag" >> "$GITHUB_OUTPUT"
+
+    - name: Push new tag
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag ${{ steps.increment_version.outputs.new_tag }}
+        git push --tags
+  release:
+    needs: increment_version
+    runs-on: arc-runner-k8s
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get the version
+      id: get_version
+      run: echo ${{ needs.increment_version.outputs.new_tag }}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ needs.increment_version.outputs.new_tag }}
+        release_name: Release ${{ needs.increment_version.outputs.new_tag }}
+        draft: false
+        prerelease: false
+  docker:
+    needs: increment_version
+    runs-on: arc-runner-k8s
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}:${{ needs.increment_version.outputs.new_tag }}, ${{ steps.meta.outputs.tags }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
